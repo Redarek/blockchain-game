@@ -3,20 +3,8 @@ import axios from "axios";
 import { API_URL } from "../../http";
 import AuthService from "../../services/AuthService";
 import { AuthResponse } from "../../types/AuthResponse";
-import { ITask } from "../../types/ITask";
 import { IUser } from "../../types/IUser";
 
-export const fetchTasks = createAsyncThunk(
-    'tasks/fetchAll',
-    async (_, thunkAPI) => {
-        try {
-            const response = await axios.get<ITask[]>('http://localhost:5050/events')
-            return response.data;
-        } catch (e) {
-            return thunkAPI.rejectWithValue("Не удалось загрузить задания")
-        }
-    }
-)
 
 interface LoginObject {
     email: string;
