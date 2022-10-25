@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {useNavigate} from "react-router-dom";
 import cl from '../styles/MainPage.module.css'
+import Canvas from "../components/Canvas";
 
 const MainPage = () => {
     const navigate = useNavigate()
@@ -8,6 +9,7 @@ const MainPage = () => {
 
     return (
         <div className={cl.wrapper}>
+            {/*<Canvas/>*/}
             //Simple Page for Work
             <div className={cl.linkDesc} onClick={(e) => {
                 navigate('/');
