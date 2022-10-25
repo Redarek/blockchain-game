@@ -10,6 +10,11 @@ const userSchema =  new Schema({
         type: String,
         required: true
     },
+    walletAddress: {
+        type: String,
+        unique: true,
+        required: true
+    },
     isActivated: {
         type: Boolean,
         default: false
@@ -17,21 +22,9 @@ const userSchema =  new Schema({
     activationLink: {
         type: String
     },
-    role: {
-        type: String,
-        default: "user"
-    },
     name: {
         type: String,
         default: "unknown"
-    },
-    spec: {
-        type: String,
-        default: "employee"
-    },
-    balance: {
-        type: Number,
-        default: 0
     },
 });
 

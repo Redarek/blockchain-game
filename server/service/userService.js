@@ -7,21 +7,22 @@ const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/ApiError');
 
 class UserService {
-    async registration(email, password) {
+    async registration(email, password, walletAddress, name) {
         const candidate = await userModel.findOne({email});
-        // Проверяем, есть ли email в БД
-        if (candidate) {
-            throw ApiError.badRequest(`Пользователь с почтовым адресом ${email} уже существует`);
+        const candidateWallet = await userModel.findOne({walletAddress});
+        // Проверяем, есть ли email и кошелек в БД
+        if (candidate && candidateWallet) {
+            throw ApiError.badRequest(`Пользователь с почтовым адресом ${email} или кошельком уже существует`);
         }
-
+        //перед регистрацией подключение MetaMask, получение номера кошелька, если такой кошелек зареган, то доступа нет, если нет, то идем дальше к email??????? Или наоборот??
         const hashPassword = await bcrypt.hash(password, 3); //хэшируем пароль
         const activationLink = uuid.v4(); // генерация ссылки активации для письма на email
 
-        const user = await userModel.create({email, password: hashPassword, activationLink}); // сохраняем польз-ля в БД
+        const user = await userModel.create({email, password: hashPassword, walletAddress, name, activationLink}); // сохраняем польз-ля в БД
         await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
 
-        const userDto = new UserDto(user); //id, email, isActivated Отправляем письмо для активации
-        const tokens = tokenService.generateTokens({...userDto}); // генерируем JWT токены
+        const userDto = new UserDto(user); //id, email, isActivated, walletAddress, name Отправляем письмо для активации
+        const tokens = tokenService.generateTokens({...userDto}); // генерируем JWT токены payload=userDto
         await tokenService.saveToken(userDto.id, tokens.refreshToken); // сохраняем рефреш токен в БД
 
         // возвращаем инфу о польз-ле и токены
@@ -40,9 +41,10 @@ class UserService {
         await user.save();
     }
 
-    async login(email, password) {
+    async login(email, password, walletAddress) {
         const user = await userModel.findOne({email});
-        if (!user) {
+        const userWallet = await userModel.findOne({walletAddress});
+        if (!user && !userWallet) {
             throw ApiError.badRequest('Пользователь с таким email не найден')
         }
 
