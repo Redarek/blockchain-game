@@ -1,15 +1,24 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {io} from "socket.io-client";
 import Web3 from "web3";
 import {ethers} from 'ethers'
 declare var window: any
 
 const Canvas = () => {
+    const canvasRef = React.useRef(null)
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        // @ts-ignore
+        const ctx = canvas.getContext('2d');
+        // ctx.fillStyle = "red";
+        // ctx.fillRect(10, 10, 150, 100)
+    
     const contractAddr = "0xd3D7095fa12C735dfC0893CC2717670E241e1d71"
 
     const WIDTH = 1280
     const HEIGHT = 720
-    let socket = io()
+    let socket = io('http://localhost:8080')
 
     socket.on('BigNumber', async function(data) {
         if (window.ethereum) {
@@ -46,7 +55,7 @@ const Canvas = () => {
     // @ts-ignore
     Img.map.src = '/client/img/map.png'
     // @ts-ignore
-    const ctx = document.getElementById("ctx").getContext("2d")
+    // const ctx = document.getElementById("ctx").getContext("2d")
     ctx.font = '30px Arial'
     // @ts-ignore
     let Player = function(initPack) {
@@ -280,11 +289,15 @@ const Canvas = () => {
         socket.emit('moveMouse')
         //тут отдельный сокет эмит для aimAngle и на сервере вынести ON из keyPress
     }
-
-
+}, [])
     return (
         <div className="middlepart">
-            <canvas width="1280px" height="720px" id="ctx">Обновите браузер</canvas>
+            <canvas 
+            width="1280px" 
+            height="720px" 
+            id="ctx"
+            ref={canvasRef}>
+                Обновите браузер</canvas>
         </div>
     );
 };

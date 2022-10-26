@@ -10,7 +10,6 @@ const socketIo = require('socket.io');
 const http = require('http');
 
 const User = require('./models/userModel');
-const Task = require('./models/taskModel');
 
 const router = require('./router/index.js');
 
@@ -25,7 +24,7 @@ app.use('/api', router);
 app.use(errorMiddleware); // middleware ошибок всегда последний app.use
 
 const serv = http.createServer(app)
-const io = socketIo(server,{ 
+const io = socketIo(serv,{ 
     cors: {
       origin: 'http://localhost:3000'
     }

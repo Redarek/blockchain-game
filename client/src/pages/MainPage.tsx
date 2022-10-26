@@ -9,7 +9,8 @@ const MainPage = () => {
 
     return (
         <div className={cl.wrapper}>
-            {/*<Canvas/>*/}
+            {/* <canvas width="1280px" height="720px" id="ctx">Обновите браузер</canvas> */}
+            <Canvas/>
             //Simple Page for Work
             <div className={cl.linkDesc} onClick={(e) => {
                 navigate('/');

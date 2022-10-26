@@ -4,6 +4,8 @@ import { login, logout } from "../store/reducers/ActionCreators";
 import cl from "../styles/RegistrationForm.module.css";
 import cx from "classnames";
 import { useNavigate } from "react-router-dom";
+import Web3 from "web3";
+declare var window: any
 
 const LoginForm: FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,9 +13,30 @@ const LoginForm: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+//   if(window.ethereum){
+//     const ethereumButton = document.querySelector('.enableEthereumButton');
+// const showAccount = document.querySelector('.showAccount');
+
+// ethereumButton.addEventListener('click', () => {
+//   getAccount();
+// });
+
+// async function getAccount() {
+//   const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+//   const account = accounts[0];
+//   showAccount.innerHTML = account;
+// }
+//   }else{
+//     alert("install metamask extension!!")
+//   }
+
   return (
     <div className={cl.auth}>
       <form className={cl.auth__form}>
+        {/* start metamask */}
+      <button className="enableEthereumButton">Enable Ethereum</button>
+      <h2>Account: <span className="showAccount"></span></h2>
+      {/* end metamask */}
         <label htmlFor="login-email" className={cl.auth__label}>
           Email
         </label>
