@@ -12,10 +12,10 @@ const RegistrationForm: FC = () => {
     const [name, setName] = useState<string>("");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const {user} = useAppSelector(state => state.authSlice.user)
+    const {walletAddress} = useAppSelector(state => state.authSlice)
 
     const handleRegistration = (e:any) => {
-        dispatch(registration({email: email, password: password, name: name, walletAddress: user.walletAddress}))
+        dispatch(registration({email: email, password: password, name: name, walletAddress: walletAddress}))
         e.preventDefault();
     }
     return (

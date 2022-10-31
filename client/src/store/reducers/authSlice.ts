@@ -4,6 +4,7 @@ import {login, logout} from "./ActionCreators";
 
 interface UserState {
     user: AuthResponse;
+    walletAddress: string;
     isAuth: boolean;
     isLoading: boolean;
     error: string;
@@ -11,6 +12,7 @@ interface UserState {
 
 const initialState: UserState = {
     user: {} as AuthResponse,
+    walletAddress: '',
     isAuth: false,
     isLoading: false,
     error: ''
@@ -20,7 +22,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setUserWalletAddress: (state, action: PayloadAction<string>) => {
-            state.user.user.walletAddress = action.payload
+            state.walletAddress = action.payload
         }
     },
 
