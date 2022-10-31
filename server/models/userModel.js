@@ -12,8 +12,8 @@ const userSchema =  new Schema({
     },
     walletAddress: {
         type: String,
-        // unique: true,
-        // required: true
+        unique: true,
+        required: true
     },
     isActivated: {
         type: Boolean,
