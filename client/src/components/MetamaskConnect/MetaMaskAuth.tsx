@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styles from "./MetaMaskAuth.module.css";
+import {useAppDispatch} from "../../hooks/redux";
+import {setUserWalletAddress} from "../../store/reducers/authSlice";
 
 //@ts-ignore
 async function connect(onConnected) {
@@ -36,6 +38,7 @@ async function checkIfWalletIsConnected(onConnected) {
 
 //@ts-ignore
 const MetaMaskAuth = ({onAddressChanged}) => {
+    const dispatch = useAppDispatch()
     const [userAddress, setUserAddress] = useState("");
 
     useEffect(() => {
@@ -44,13 +47,14 @@ const MetaMaskAuth = ({onAddressChanged}) => {
 
     useEffect(() => {
         onAddressChanged(userAddress);
+        dispatch(setUserWalletAddress(userAddress))
     }, [userAddress]);
 
     return (
         <div>
             {userAddress
                 ? <div></div>
-                :  <button className={styles.button} onClick={() => connect(setUserAddress)}>
+                : <button className={styles.button} onClick={() => connect(setUserAddress)}>
                     Connect to MetaMask
                 </button>
             }
@@ -63,7 +67,7 @@ const MetaMaskAuth = ({onAddressChanged}) => {
         //         …{userAddress.substring(userAddress.length - 4)}
         //     </span>
         // </div>
-)
+    )
 };
 
 export default MetaMaskAuth;

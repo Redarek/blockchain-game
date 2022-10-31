@@ -18,7 +18,11 @@ const initialState: UserState = {
 const authSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        setUserWalletAddress: (state, action: PayloadAction<string>) => {
+            state.user.user.walletAddress = action.payload
+        }
+    },
 
     extraReducers: {
         [login.fulfilled.type]: (state, action: PayloadAction<AuthResponse>) => {
@@ -51,5 +55,5 @@ const authSlice = createSlice({
         },
     }
 })
-export const {} = authSlice.actions;
+export const {setUserWalletAddress} = authSlice.actions;
 export default authSlice.reducer;

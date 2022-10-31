@@ -2,7 +2,7 @@ import React, {FC, useState} from "react";
 import cl from "../styles/RegistrationForm.module.css";
 import cx from "classnames";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import {registration} from "../store/reducers/ActionCreators";
 
 
@@ -12,6 +12,12 @@ const RegistrationForm: FC = () => {
     const [name, setName] = useState<string>("");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const {user} = useAppSelector(state => state.authSlice.user)
+
+    const handleRegistration = (e:any) => {
+        dispatch(registration({email: email, password: password, name: name, walletAddress: user.walletAddress}))
+        e.preventDefault();
+    }
     return (
         <div className={cl.auth}>
             <form className={cl.auth__form}>
@@ -46,10 +52,7 @@ const RegistrationForm: FC = () => {
                 />
                 <button
                     className={cx(cl.auth__button, cl.auth__button_registration)}
-                    onClick={(e) => {
-                        dispatch(registration({email: email, password: password, name: name}))
-                        e.preventDefault();
-                    }}
+                    onClick={(e) => handleRegistration(e)}
                 >Зарегистрироваться
                 </button>
                 <div
