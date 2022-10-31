@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 
 const { ethers, BigNumber} = require("ethers");
-const socketIo = require('socket.io');
+const { Server } = require('socket.io');
 const http = require('http');
 
 const User = require('./models/userModel');
@@ -23,10 +23,10 @@ app.use(cors({
 app.use('/api', router);
 app.use(errorMiddleware); // middleware ошибок всегда последний app.use
 
-const serv = http.createServer(app)
-const io = socketIo(serv,{ 
+const server = http.createServer(app)
+const io = new Server(server,{ 
     cors: {
-      origin: 'http://localhost:3000'
+      origin: ['http://localhost:3000']
     }
 })
 
@@ -38,9 +38,10 @@ const start = async () => {
             useUnifiedTopology: true,
             useNewUrlParser: true
         });
-        app.listen(process.env.PORT || 7000, () => {
+        server.listen(process.env.PORT || 7000, () => {
             console.log(`Server started on port ${process.env.PORT}`);
         });
+        
 
         // игра
         let SOCKET_LIST = {} //список сокетов

@@ -11,7 +11,7 @@ class UserService {
         const candidate = await userModel.findOne({email});
         const candidateWallet = await userModel.findOne({walletAddress});
         // Проверяем, есть ли email и кошелек в БД
-        if (candidate && candidateWallet) {
+        if (candidate) {
             throw ApiError.badRequest(`Пользователь с почтовым адресом ${email} или кошельком уже существует`);
         }
         //перед регистрацией подключение MetaMask, получение номера кошелька, если такой кошелек зареган, то доступа нет, если нет, то идем дальше к email??????? Или наоборот??
@@ -44,7 +44,7 @@ class UserService {
     async login(email, password, walletAddress) {
         const user = await userModel.findOne({email});
         const userWallet = await userModel.findOne({walletAddress});
-        if (!user && !userWallet) {
+        if (!user) {
             throw ApiError.badRequest('Пользователь с таким email не найден')
         }
 

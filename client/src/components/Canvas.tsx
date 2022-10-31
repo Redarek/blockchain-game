@@ -1,59 +1,74 @@
 import React, {useEffect, useState} from 'react';
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import Web3 from "web3";
 import {ethers} from 'ethers'
+import mapPicture from '../images/map.png'
 declare var window: any
 
 const Canvas = () => {
     const canvasRef = React.useRef(null)
 
+    // useEffect(() => {
+    //     
+    //     const canvas = canvasRef.current;
+    //     // @ts-ignore
+    //     const ctx = canvas.getContext('2d');
+    //     ctx.fillStyle = "red";
+    //     ctx.fillRect(10, 10, 150, 100)
+    // }, [])
+
     useEffect(() => {
-        const canvas = canvasRef.current;
-        // @ts-ignore
-        const ctx = canvas.getContext('2d');
-        // ctx.fillStyle = "red";
-        // ctx.fillRect(10, 10, 150, 100)
+    const socket = io('http://localhost:8080')
+    const canvas = canvasRef.current;
+    // @ts-ignore
+    const ctx = canvas.getContext('2d');
+    // ctx.fillStyle = "red";
+    // ctx.fillRect(10, 10, 150, 100)
     
     const contractAddr = "0xd3D7095fa12C735dfC0893CC2717670E241e1d71"
 
     const WIDTH = 1280
     const HEIGHT = 720
-    let socket = io('http://localhost:8080')
+    
 
-    socket.on('BigNumber', async function(data) {
-        if (window.ethereum) {
-            const provider=  new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", [])
-            const signer = provider.getSigner()
-            const contract = new ethers.Contract(
-                contractAddr,
-                // @ts-ignore
-                abi = [ "function mint(uint numberOfTokens) external payable" ], signer)
-            try {
-                const response = await contract.mint(data, {
-                    value: ethers.utils.parseEther("0.18"),
-                })
-                console.log('response: ', response)
-            } catch(err){
-                console.log("error", err)
-            }
-        }
-    })
+    // socket.on('BigNumber', async function(data) {
+    //     if (window.ethereum) {
+    //         const provider=  new ethers.providers.Web3Provider(window.ethereum);
+    //         await provider.send("eth_requestAccounts", [])
+    //         const signer = provider.getSigner()
+    //         const contract = new ethers.Contract(
+    //             contractAddr,
+    //             // @ts-ignore
+    //             abi = [ "function mint(uint numberOfTokens) external payable" ], signer)
+    //         try {
+    //             const response = await contract.mint(data, {
+    //                 value: ethers.utils.parseEther("0.18"),
+    //             })
+    //             console.log('response: ', response)
+    //         } catch(err){
+    //             console.log("error", err)
+    //         }
+    //     }
+    // })
 
     //game
     let Img = {}
     // @ts-ignore
     Img.player = new Image()
     // @ts-ignore
-    Img.player.src = '/client/img/player.png'
+    Img.player.src = '/images/player.png';
     // @ts-ignore
     Img.bullet = new Image()
     // @ts-ignore
-    Img.bullet.src = '/client/img/bullet.png'
+    Img.bullet.src = '/images/bullet.png'
+    // @ts-ignore   
+    console.log(Img.bullet.src)
     // @ts-ignore
     Img.map = new Image()
     // @ts-ignore
-    Img.map.src = '/client/img/map.png'
+    Img.map.src = '/images/map.png'
+    // @ts-ignore
+    console.log(Img.map.src)
     // @ts-ignore
     // const ctx = document.getElementById("ctx").getContext("2d")
     ctx.font = '30px Arial'
@@ -120,6 +135,7 @@ const Canvas = () => {
             // @ts-ignore
             let walkingMod = Math.floor(self.spriteAnimCounter) % 3
             // @ts-ignore
+
             ctx.drawImage(Img.player,
                 walkingMod*frameWidth, directionMod*frameHeight, frameWidth, frameHeight,
                 x-width/2, y-height/2, width, height);
@@ -242,7 +258,7 @@ const Canvas = () => {
         // @ts-ignore
         let x = WIDTH/2 - Player.list[selfId].x
         // @ts-ignore
-        let y = HEIGHT/2 - Player.list[selfId].y
+        let y = HEIGHT/2 - Player.list[selfId].y 
         // @ts-ignore
         ctx.drawImage(Img.map, x, y, WIDTH*2, HEIGHT *2)
     }

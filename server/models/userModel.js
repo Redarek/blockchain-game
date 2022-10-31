@@ -12,7 +12,7 @@ const userSchema =  new Schema({
     },
     walletAddress: {
         type: String,
-        unique: true,
+        // unique: true,
         // required: true
     },
     isActivated: {
