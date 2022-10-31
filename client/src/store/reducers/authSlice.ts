@@ -1,12 +1,13 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AuthResponse} from "../../types/AuthResponse";
-import {login, logout} from "./ActionCreators";
+import {login, logout, registration} from "./ActionCreators";
 
 interface UserState {
     user: AuthResponse;
     walletAddress: string;
     isAuth: boolean;
     isLoading: boolean;
+    result: string;
     error: string;
 }
 
@@ -15,6 +16,7 @@ const initialState: UserState = {
     walletAddress: '',
     isAuth: false,
     isLoading: false,
+    result: '',
     error: ''
 }
 const authSlice = createSlice({
@@ -54,7 +56,7 @@ const authSlice = createSlice({
         [logout.rejected.type]: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
             state.error = action.payload
-        },
+        }
     }
 })
 export const {setUserWalletAddress} = authSlice.actions;

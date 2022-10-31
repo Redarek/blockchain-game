@@ -4,6 +4,8 @@ import cx from "classnames";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import {registration} from "../store/reducers/ActionCreators";
+import loginForm from "./LoginForm";
+import MetaMaskAuth from "./MetamaskConnect/MetaMaskAuth";
 
 
 const RegistrationForm: FC = () => {
@@ -12,10 +14,12 @@ const RegistrationForm: FC = () => {
     const [name, setName] = useState<string>("");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const {walletAddress} = useAppSelector(state => state.authSlice)
-
-    const handleRegistration = (e:any) => {
+    const {walletAddress, result, error} = useAppSelector(state => state.authSlice)
+    const handleRegistration = (e: any) => {
         dispatch(registration({email: email, password: password, name: name, walletAddress: walletAddress}))
+        setEmail('')
+        setPassword('')
+        setName('')
         e.preventDefault();
     }
     return (

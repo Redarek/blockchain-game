@@ -9,6 +9,7 @@ import {IUser} from "../../types/IUser";
 interface LoginObject {
     email: string;
     password: string;
+    walletAddress: string;
 }
 
 interface RegObject {
@@ -22,7 +23,7 @@ export const login = createAsyncThunk(
     'user/login',
     async (loginObject: LoginObject) => {
         try {
-            const response = await AuthService.login(loginObject.email, loginObject.password);
+            const response = await AuthService.login(loginObject.email, loginObject.password, loginObject.walletAddress);
             // console.log(response);
             localStorage.setItem('token', response.data.accessToken);
             return response.data;
