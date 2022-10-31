@@ -11,6 +11,8 @@ declare var window: any
 const LoginForm: FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [name, setName] = useState<string>("");
+
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -48,6 +50,7 @@ const LoginForm: FC = () => {
                     <button className={cx(cl.auth__button, cl.auth__button_login)}
                             onClick={(e) => {
                                 dispatch(login({email: email, password: password}));
+                                navigate('/')
                                 e.preventDefault()
                             }
                             }

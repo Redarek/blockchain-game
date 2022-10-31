@@ -12,6 +12,7 @@ interface LoginObject {
 }
 
 interface RegObject {
+    walletAddress: string;
     email: string;
     password: string;
     name: string;
@@ -35,7 +36,7 @@ export const registration = createAsyncThunk(
     'user/registration',
     async (regObject: RegObject) => {
         try {
-            const response = await AuthService.registration(regObject.email, regObject.password, regObject.name);
+            const response = await AuthService.registration(regObject.email, regObject.password, regObject.name, regObject.walletAddress);
             // console.log(response);
             localStorage.setItem('token', response.data.accessToken);
             return response.data;
